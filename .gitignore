@@ -1,9 +1,12 @@
+
 node_modules/
 client/node_modules/
 client/dist/
 server/node_modules/
 
 downloads/
+tools/
+
 *.mp4
 *.mp3
 *.webm

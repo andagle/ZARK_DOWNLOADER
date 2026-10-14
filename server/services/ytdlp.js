@@ -1,7 +1,26 @@
 const { execFile, spawn } = require("child_process");
+const path = require("path");
+const fs = require("fs");
 
 const YTDLP_PATH =
-    "E:\\ZATARA_FILES\\youtube-downloader\\tools\\yt-dlp.exe";
+    process.env.YTDLP_PATH ||
+    (
+        process.platform === "win32"
+            ? path.join(
+                __dirname,
+                "..",
+                "..",
+                "tools",
+                "yt-dlp.exe"
+            )
+            : "yt-dlp"
+    );
+
+const DOWNLOADS_DIR =
+    process.env.DOWNLOADS_DIR ||
+    path.join(__dirname, "..", "..", "downloads");
+
+fs.mkdirSync(DOWNLOADS_DIR, { recursive: true });
 
 function runYtDlp(args) {
     return new Promise((resolve, reject) => {
@@ -145,8 +164,10 @@ async function getVideoFormats(url) {
 async function downloadVideo(url, quality, onProgress) {
     const height = parseInt(quality.replace("p", ""), 10);
 
-    const outputPath =
-        "E:\\ZATARA_FILES\\youtube-downloader\\downloads\\%(title)s.%(ext)s";
+    const outputPath = path.join(
+    DOWNLOADS_DIR,
+    "%(title)s.%(ext)s"
+);
 
     await downloadWithProgress([
         "--newline",
@@ -164,8 +185,10 @@ async function downloadVideo(url, quality, onProgress) {
 }
 
 async function downloadAudio(url, onProgress) {
-    const outputPath =
-        "E:\\ZATARA_FILES\\youtube-downloader\\downloads\\%(title)s.%(ext)s";
+    const outputPath = path.join(
+    DOWNLOADS_DIR,
+    "%(title)s.%(ext)s"
+);
 
     await downloadWithProgress([
         "--newline",

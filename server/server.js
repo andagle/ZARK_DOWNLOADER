@@ -12,9 +12,15 @@ const {
 } = require("./services/ytdlp");
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 const downloadJobs = new Map();
+
+const DOWNLOADS_DIR =
+    process.env.DOWNLOADS_DIR ||
+    path.join(__dirname, "..", "downloads");
+
+fs.mkdirSync(DOWNLOADS_DIR, { recursive: true });
 
 // Middleware
 app.use(cors());
@@ -155,12 +161,7 @@ app.post("/api/video/download", async (req, res) => {
             }
         )
         .then(() => {
-            const downloadsPath = path.join(
-                "E:",
-                "ZATARA_FILES",
-                "youtube-downloader",
-                "downloads"
-            );
+            const downloadsPath = DOWNLOADS_DIR;
 
             const files = fs.readdirSync(downloadsPath);
 
@@ -474,7 +475,5 @@ app.get("/api/video/audio-file/:jobId", (req, res) => {
 // ========================================
 
 app.listen(PORT, () => {
-    console.log(
-        `Server running at http://localhost:${PORT}`
-    );
+    console.log(`Server running on port ${PORT}`);
 });
