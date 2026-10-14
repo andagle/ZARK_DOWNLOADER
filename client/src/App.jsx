@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-const API = "http://localhost:4000/api/video";
+const API =
+    import.meta.env.VITE_API_URL ||
+    "http://localhost:4000/api/video";
 
 async function postJson(path, body) {
   const res = await fetch(`${API}/${path}`, {
