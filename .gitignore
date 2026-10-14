@@ -1,0 +1,16 @@
+node_modules/
+client/node_modules/
+client/dist/
+server/node_modules/
+
+downloads/
+*.mp4
+*.mp3
+*.webm
+
+.env
+.env.*
+!.env.example
+
+.DS_Store
+Thumbs.db
