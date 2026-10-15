@@ -1,30 +1,31 @@
-
 FROM node:22-bookworm-slim
 
-# Install FFmpeg and required utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
-    nodejs \
+    python3-pip \
+    git \
     ffmpeg \
-    curl \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install yt-dlp for Linux
-RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
-    -o /usr/local/bin/yt-dlp \
-    && chmod a+rx /usr/local/bin/yt-dlp
+RUN python3 -m pip install --break-system-packages --no-cache-dir -U \
+    "yt-dlp[default]" \
+    bgutil-ytdlp-pot-provider
+
+RUN git clone --depth 1 --single-branch --branch 2.0.2 \
+    https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git \
+    /root/bgutil-ytdlp-pot-provider \
+    && cd /root/bgutil-ytdlp-pot-provider/server \
+    && npm ci \
+    && npx tsc
 
 WORKDIR /app
 
-# Install backend dependencies
 COPY package*.json ./
 RUN npm install --omit=dev
 
-# Copy backend source code
 COPY server ./server
 
-# Configure runtime
 ENV NODE_ENV=production
 ENV DOWNLOADS_DIR=/app/downloads
 
