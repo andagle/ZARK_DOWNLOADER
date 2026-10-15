@@ -97,6 +97,8 @@ async function getVideoInfo(url) {
     const output = await runYtDlp([
         "--js-runtimes",
         "node",
+        "--extractor-args",
+        "youtube:player_client=tv,web_safari",
         "--remote-components",
         "ejs:github",
         "--dump-single-json",
@@ -176,6 +178,8 @@ async function downloadVideo(url, quality, onProgress) {
     await downloadWithProgress([
     "--js-runtimes",
     "node",
+    "--extractor-args",
+    "youtube:player_client=tv,web_safari",
     "--newline",
     "--no-playlist",
     "-f",
@@ -199,6 +203,8 @@ async function downloadAudio(url, onProgress) {
     await downloadWithProgress([
         "--js-runtimes",
         "node",
+        "--extractor-args",
+        "youtube:player_client=tv,web_safari",
         "--newline",
         "--no-playlist",
         "-x",
