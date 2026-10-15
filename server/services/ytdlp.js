@@ -95,6 +95,8 @@ function downloadWithProgress(args, onProgress) {
 
 async function getVideoInfo(url) {
     const output = await runYtDlp([
+        "--js-runtimes",
+        "node",
         "--dump-single-json",
         "--no-playlist",
         url
@@ -170,15 +172,17 @@ async function downloadVideo(url, quality, onProgress) {
 );
 
     await downloadWithProgress([
-        "--newline",
-        "--no-playlist",
-        "-f",
-        `bv*[height<=${height}][ext=mp4]+ba/b[height<=${height}][ext=mp4]`,
-        "--merge-output-format",
-        "mp4",
-        "-o",
-        outputPath,
-        url
+    "--js-runtimes",
+    "node",
+    "--newline",
+    "--no-playlist",
+    "-f",
+    `bv*[height<=${height}][ext=mp4]+ba/b[height<=${height}][ext=mp4]`,
+    "--merge-output-format",
+    "mp4",
+    "-o",
+    outputPath,
+    url
     ], onProgress);
 
     return true;
@@ -191,6 +195,8 @@ async function downloadAudio(url, onProgress) {
 );
 
     await downloadWithProgress([
+        "--js-runtimes",
+        "node",
         "--newline",
         "--no-playlist",
         "-x",
