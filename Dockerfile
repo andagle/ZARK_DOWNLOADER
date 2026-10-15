@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN python3 -m pip install --break-system-packages --no-cache-dir -U \
     "yt-dlp[default]" \
-    bgutil-ytdlp-pot-provider
+    "bgutil-ytdlp-pot-provider==2.0.2"
 
 RUN git clone --depth 1 --single-branch --branch 2.0.2 \
     https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git \
