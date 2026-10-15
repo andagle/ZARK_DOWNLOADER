@@ -97,6 +97,8 @@ async function getVideoInfo(url) {
     const output = await runYtDlp([
         "--js-runtimes",
         "node",
+        "--remote-components",
+        "ejs:github",
         "--dump-single-json",
         "--no-playlist",
         url
